@@ -1,3 +1,14 @@
+/*
+Class: CPSC 122-02
+Team Member 1: Tanner Franz
+Team Member 2: Wesley Muehlhausen
+Submitted by: Tanner Franz
+GU Username: tfranz
+File Name: Calc.cpp Calc.h
+Program illustrates the reading in and storage of an expression
+to Build: g++ Calc.cpp CalcTst.cpp
+To execute: ./a.out "(exxpression)" 1 2 3 (values)
+*/
 #include "Calc.h"
 #include <iostream>
 
