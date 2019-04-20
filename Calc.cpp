@@ -1,10 +1,22 @@
+/*
+Class: CPSC 122-02 
+Team Member 1: Tanner Franz 
+Team Member 2: Wesley Muehlhausen
+Submitted By: Tanner Franz 
+GU Username: tfranz 
+File Name:proj8.cpp, proj8Tst.cpp
+List3 class functions to manipualte a linked list
+To Build: g++ proj8.cpp proj8Tst.cpp
+To Execute: ./a.out
+*/ 
 #include "Calc.h"
 #include <iostream>
 
 	Calc::Calc(int argcIn, char* argvIn[])
-	{
+	{	
+		cout << "valid" << endl;
+		inFix = new char[strlen(argvIn[1])];
 		length = strlen(argvIn[1]);
-		inFix = argvIn[1];
 		int i = 0;
 		while(i < length)
 			{			
@@ -12,22 +24,29 @@
 				i++;
 			}
 			inFix[i] = '\0';
-			argVG = argvIn;
+			inFix->Parse();
+			int a = 0;
+			for(int c = 2; c < argcIn; c++)
+				{
+					values[a] = argvIn[c];
+					a++;
+				}
 	}
 
 void Calc::DisplayInFix()
 	{ 
-		for(int i = 0; i < length; i++
+		for(int i = 0; i < length; i++)
 			cout << inFix[i];
 	cout << endl;
 	return;
 	}
 
-void Calc::Parse(char* cmdLineInp[], int num_cmd_line_args)
+void Calc::Parse()
 	{
 		CheckTokens();
 		CheckParens();
-		BuildHash()
+		BuildHash();
+		return;
 	}
 
 bool Calc::CheckTokens() 
@@ -46,35 +65,39 @@ bool Calc::CheckTokens()
 		return true;	
 	}
 
+
+
 bool Calc::CheckParens()
 	{
-
-		for(int i = 0; inFix[i] != NULL; i++)
+		int paren = 0;
+		for(int i = 0; i<length; i++)
 			{
 				if(inFix[i] == '(')
-					stk->Push(inFix[i]);
+					paren++;
 				else if (inFix[i] ==')')
 					stk->Pop();
+					paren--;
 			}
-		if(stk->IsEmpty)
+		if(paren == 0)
 			{
-				cout << "even";
+				cout << "even parens";
 				return true;
 			}
 		return false;
 	}
 
-void Calc::BuildHash(char* argvIn[])
+
+void Calc::BuildHash()
 	{
 		hashTble = new int[26];
 		
 int j = 2;
 		for(int i =0; i<length; i++)
 			{
-				if(argvIn[i] >= 65 || express[i] <=90)
+				if(inFix[i] >= 65 || inFix[i] <=90)
 					{
-						int num = atoi(args[j]);
-						hashTble[express[i]%65] = num;
+						int num = atoi(values[i]);
+						hashTble[inFix[i]%65] = num;
 						j++;
 					}
 				}
@@ -82,15 +105,16 @@ int j = 2;
 		return;
 	}
 
+
 void Calc::FillHash()
 	{
 		int j = 2;
-		for(int i =0; express[i]!= NULL; i++)
+		for(int i =0; i < length; i++)
 			{
-				if(express[i] >= 65 || express[i] <=90)
+				if(inFix[i] >= 65 || inFix[i] <=90)
 					{
 						int num = atoi(args[j]);
-						hashTble[express[i]%65] = num;
+						hashTble[inFix[i]%65] = num;
 						j++;
 					}
 				}
@@ -98,12 +122,14 @@ void Calc::FillHash()
 	}
 
 
-void Calc::PutHash(int value, int letter)
+void Calc::PutHash(int value, char letter)
 	{
-		int hashPlace =0;
+		int hashPlace;
 		hashPlace = letter%65;
-		hashTble[hashPlac\g++] =value;
+		hashTble[hashPlace] = value;
 	}
+
+
 int Calc::GetHash(char letter)
 	{
 		int num = 0;

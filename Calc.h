@@ -41,7 +41,7 @@ class Calc
 	
 	*/
 	void BuildHash();
-	void FillHash(char* express, char* args);
+	void FillHash();
 	int GetHash(char letter);
 	void PutHash(int value, int letter);
   /*
@@ -50,7 +50,7 @@ class Calc
         b) checked for valid input. 2) symbolTble has been constructed  
 	3) inFix holds a valid in fix expression
   */
-	void Parse(char* cmdLineInp[], int num_cmd_line_args);
+	void Parse();
   
 
   /*
@@ -59,7 +59,7 @@ class Calc
         false otherwise  Legal characters are ')', '(', '+','-','*','/',
         'A' ... 'Z'   
   */
-  bool CheckTokens(char* express); 
+  bool CheckTokens(); 
 
   /*
    pre:  instance of calculator exists and all input tokens are legal
@@ -74,7 +74,8 @@ class Calc
   char*  inFix;    //null-terminated string that holds infix expression  
   char*  postFix;  //null-terminated string that holds the post-fix
   int*   hashTble; //pointer to symbolTable holding expression values
-	char* argVG[];
+	char* args;
+	char* values[];
 };
 #endif 
 
