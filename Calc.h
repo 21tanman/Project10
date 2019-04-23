@@ -41,9 +41,11 @@ class Calc
 	
 	*/
 	void BuildHash();
+
 	void FillHash();
 	int GetHash(char letter);
 	void PutHash(int value, char letter);
+	void PrintHash();
   /*
   pre:  invoked from constructor
   post: 1) command line input has been a) checked for balanced parentheses
