@@ -24,7 +24,6 @@ To Execute: ./a.out
 				i++;
 			}
 			inFix[i] = '\0';
-			inFix->Parse();
 			int a = 0;
 			for(int c = 2; c < argcIn; c++)
 				{
@@ -42,10 +41,12 @@ void Calc::DisplayInFix()
 	}
 
 void Calc::Parse()
-	{
-		CheckTokens();
-		CheckParens();
+	{ 
 		BuildHash();
+		if(CheckTokens()&&CheckParens())
+			cout << "Valid Expression" << endl;
+		else
+			cout << "Invalid expression" << endl;
 		return;
 	}
 
@@ -90,13 +91,13 @@ bool Calc::CheckParens()
 void Calc::BuildHash()
 	{
 		hashTble = new int[26];
-		
+		int num;
 int j = 2;
 		for(int i =0; i<length; i++)
 			{
 				if(inFix[i] >= 65 || inFix[i] <=90)
 					{
-						int num = atoi(values[i]);
+						num = atoi(values[i]);
 						hashTble[inFix[i]%65] = num;
 						j++;
 					}
@@ -113,7 +114,7 @@ void Calc::FillHash()
 			{
 				if(inFix[i] >= 65 || inFix[i] <=90)
 					{
-						int num = atoi(args[j]);
+						int num = atoi(values[j]);
 						hashTble[inFix[i]%65] = num;
 						j++;
 					}
@@ -138,4 +139,4 @@ int Calc::GetHash(char letter)
 		num = hashTble[hashPlace];
 		return num;
 	}
-	*/
+	
