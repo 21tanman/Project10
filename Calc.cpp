@@ -4,20 +4,20 @@ Team Member 1: Tanner Franz
 Team Member 2: Wesley Muehlhausen
 Submitted By: Tanner Franz 
 GU Username: tfranz 
-File Name:proj8.cpp, proj8Tst.cpp
+File Name:
 List3 class functions to manipualte a linked list
-To Build: g++ proj8.cpp proj8Tst.cpp
-To Execute: ./a.out
+To Build: g++ Calc.cpp, CalcTst.cpp list1.cpp stack2.cpp
+To Execute: ./a.out " <equation<" <value> <value>
 */
 
 #include "CalcMine.h"
 #include <iostream>
 
 	Calc::Calc(int argcIn, char* argvIn[])
-	{	
-		inFix = new char[strlen(argvIn[1])];
-		length = strlen(argvIn[1]);
+	{	cout << "construct" << endl;
 		int i = 0;
+		length = strlen(argvIn[1]);
+		inFix = new char[strlen(argvIn[1])+1];
 		while(i < length)
 			{			
 				inFix[i] = argvIn[1][i];
@@ -25,16 +25,21 @@ To Execute: ./a.out
 			}
 			inFix[i] = '\0';
 			int a = 0;
-			for(int c = 2; c < argcIn; c++)
+cout << argcIn << endl;
+	for(int c = 2; c < argcIn; c++)
 				{
-					values[a] = argvIn[c];
+					cout << "for loop" << c << endl;
+					values[a] = atoi(argvIn[c]);
 					a++;
+					cout << "bottom of for" << c << endl;
 				}
 		Parse();
+		numArgs = argcIn;
 	}
 
+
 void Calc::DisplayInFix()
-	{ 
+	{ cout << "Infix called" << endl;
 		for(int i = 0; i < length; i++)
 			cout << inFix[i];
 		cout << endl;
@@ -42,7 +47,7 @@ void Calc::DisplayInFix()
 	}
 
 void Calc::Parse()
-	{ 
+	{ cout << "called Parse()" << endl;
 		BuildHash();
 		if(CheckTokens()&&CheckParens())
 			cout << "Valid Expression" << endl;
@@ -71,21 +76,22 @@ bool Calc::CheckTokens()
 
 bool Calc::CheckParens()
 	{
-		int paren = 0;
-		for(int i = 0; inFix[i]!= '\0'; i++)
+		int paren = 20;
+		for(int i = 0; i < length; i++)
 			{
 				if(inFix[i] == '(')
 					{
-					paren++;
-					//stk->Push()
+						paren ++;
+						//stk->Push(inFix[i]);
 					}
 				else if (inFix[i] ==')')
 					{
-					//stk->Pop();
-					paren--;
+						//stk->Pop();
+						paren--;
 					}
 			}
-		if(paren == 0)//stk->IsEmpty())
+		
+		if(paren == 20)
 			{
 				cout << "Even parens" << endl;
 				return true;
@@ -96,50 +102,55 @@ bool Calc::CheckParens()
 
 
 void Calc::InFixToPostFix()
-	{
+	{cout << "infix called" << endl;
 		int j = 0;
 		int CP = 0;
-		postFix = new char [strlen(inFix)];
-		//infix read in;
+    char operand;
+		postFix = new char [length];
 		for(int i = 0; i < length; i++)
-			{
+			{ cout << "for loop " << i << endl;
+				int priority = 0;
 				if(inFix[i] == '+' ||inFix[i] == '-' || inFix[i] == '*' ||inFix[i] == '/'||inFix[i] == ')'||inFix[i] == '(')
 				{
+cout << " first if " << endl;
 					stk->Push(inFix[i]);
+	cout << "back in if" << endl;
 				}
 				else
 					{
-					postFix[j] = inFix[i];
-					j++;
+cout << "I made" << endl;
+						postFix[j] = inFix[i];
+						cout << "2";
+						j++;
 					}
-
-
-				if(stk->Peek() == ')')
+cout << "B4 while" << endl;
+cout << "Peek " <<stk->Peek();
+			if(i>0)
+				{
+					int temp = PEMDAS(stk->Peek());
+cout << "After PEMDAS CALL 1" << endl;
+				while(temp > priority)
 					{
+cout << "in while" << endl;
+						postFix[j]=	stk->Peek();
+cout << "after peek";
+						stk->Pop();
+cout << "after pop";
+					}
+				}
+cout << "eofor" << endl;
+			}
+				/*if(stk->Peek() == ')')
+					{cout << "if2";
 					stk->Pop();
 					postFix[j] == stk->Peek();
 					stk->Pop(); 
 					j++;
-					}
-			}
-		postlength = j;
-	}
+					}*/
+						}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	
 
 
 
@@ -152,13 +163,14 @@ void Calc::BuildHash()
 
 
 void Calc::FillHash()
-	{
+	{ int letter;
 		int j = 0;
 		for(int i =0; i < length; i++)
 			{
 				if(inFix[i] >= 65 && inFix[i] <=90)
-					{
-						hashTble[inFix[i]%65] = atoi(values[j]);//num;
+					{PutHash(values[j], inFix[i]);
+						//letter  = (inFix[i]%65);
+						//hashTble[letter] = values[j];
 						j++;
 					}
 				}
@@ -188,3 +200,48 @@ void Calc::PrintHash()
 			cout << hashTble[i];
 	}
 	
+void Calc:: DisplayPostFix()
+	{
+		cout << "\n POSTFIX\n";
+		for(int r = 0; r < length; r++)
+			{
+				cout << postFix[r];
+			}
+	}
+void Calc:: Evaluate()
+	{	
+		for(int i = 0; i < length; i++)
+			{
+	
+			
+			}
+	
+}
+
+int Calc:: PEMDAS(char ch)	
+	{
+cout << "PEMDAS CALLED" << endl;
+		int priority;
+		if(ch == '+' ||ch == '-')
+			priority = 1;
+		else if(ch == '/'||ch == '*')
+			priority = 2;
+		else if(ch == '('||ch ==')')
+			priority = 0;
+		else
+			priority = 0;
+		return priority;
+	}
+
+		
+
+
+
+
+
+
+
+
+
+
+
